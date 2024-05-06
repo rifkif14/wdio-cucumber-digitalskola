@@ -1,40 +1,42 @@
-const { browser, $ } = require('@wdio/globals')
+const { $ } = require('@wdio/globals')
+const Page = require('./page');
 
-class SauceLoginPage {
+/**
+ * sub page containing specific selectors and methods for a specific page
+ */
+class LoginPage extends Page {
 
-    get username() {
-        return $('#user-name');
+    /**
+     * define selectors using getter methods
+     */
+    get inputUsername () {
+        return $('#username');
     }
 
-    get password() {
+    get inputPassword () {
         return $('#password');
     }
 
-    get loginButton() {
-        return $('#login-button');
+    get btnSubmit () {
+        return $('button[type="submit"]');
     }
 
-    async inputUsername(username) {
-        await this.username.setValue(username)
+    /**
+     * a method to encapsule automation code to interact with the page
+     * e.g. to login using username and password
+     */
+    async login (username, password) {
+        await this.inputUsername.setValue(username);
+        await this.inputPassword.setValue(password);
+        await this.btnSubmit.click();
     }
 
-    async inputPassword(password) {
-        await this.password.setValue(password)
-    }
-
-    async clickLoginButton() {
-        await this.loginButton.click()
-    }
-
-    async login(username, password) {
-        await this.inputUsername(username)
-        await this.inputPassword(password)
-        await this.clickLoginButton()
-    }
-
-    open() {
-        return browser.url(`https://www.saucedemo.com/`);
+    /**
+     * overwrite specific options to adapt it to page object
+     */
+    open () {
+        return super.open('login');
     }
 }
 
-module.exports = new SauceLoginPage();
+module.exports = new LoginPage();

@@ -1,5 +1,5 @@
 const { $ } = require('@wdio/globals')
-const Page = require('./dashboard.js');
+const Page = require('./page');
 
 /**
  * sub page containing specific selectors and methods for a specific page
