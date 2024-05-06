@@ -49,9 +49,15 @@ exports.config = {
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
     // https://saucelabs.com/platform/platform-configurator
     //
-    capabilities: [{
-        browserName: 'chrome'
-    }],
+    capabilities: [
+        {
+            browserName: 'chrome'
+        },
+        {
+            browserName: 'firefox'
+        }
+    ],
+    
 
     //
     // ===================
@@ -123,7 +129,7 @@ exports.config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
-    reporters: [['allure', {outputDir: 'allure-results'}],'cucumberjs-json'],
+    reporters: ['spec','cucumberjs-json'],
 
     // If you are using Cucumber you need to specify the location of your step definitions.
     cucumberOpts: {
@@ -264,8 +270,13 @@ exports.config = {
      * @param {number}                 result.duration  duration of scenario in milliseconds
      * @param {object}                 context          Cucumber World object
      */
-    // afterScenario: function (world, result, context) {
-    // },
+    afterScenario: function (world, result, context) {
+        if (!result.passed) {
+            browser.takeScreenshot('./screenshots/failed-test.png');
+        }
+    }
+    
+    
     /**
      *
      * Runs after a Cucumber Feature.
